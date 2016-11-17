@@ -1,0 +1,23 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "kofile challenge app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathanni/kofile_code_chanllenge.git"
+  },
+  "author": "Nathan Ni",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nathanni/kofile_code_chanllenge/issues"
+  },
+  "homepage": "https://github.com/nathanni/kofile_code_chanllenge#readme",
+  "dependencies": {
+    "jsonfile": "^2.4.0",
+    "underscore": "^1.8.3"
+  }
+}
