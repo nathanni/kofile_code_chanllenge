@@ -21,7 +21,7 @@
         http://localhost:3000/api/fees/id<br />
         example: (http://localhost:3000/api/fees/20150118000001)<br />
         
-        Get fees of specific order arrays (use ',' as the separator)<br />
+        Get fees of specific orders array (use ',' as the separator)<br />
         http://localhost:3000/api/fees/id <br />
         example: (http://localhost:3000/api/fees/20150111000001,20150123000001)<br />
         
@@ -29,7 +29,7 @@
         http://localhost:3000/api/distributions/id<br />
         example: (http://localhost:3000/api/distributions/20150118000001)<br />
         
-        Get distributions of specific order arrays (use ',' as the separator)<br />
+        Get distributions of specific orders array (use ',' as the separator)<br />
         http://localhost:3000/api/distributions/id <br />
         example: (http://localhost:3000/api/distributions/20150111000001,20150123000001)<br />
         

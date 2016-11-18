@@ -4,14 +4,14 @@ const feesFile = '../doc/fees.json';
 const ordersFile = '../doc/orders.json';
 
 //ENABLE for testing
-readFiles()
-    .then((ret) =>
-        organizeOrders(ret[0], ret[1])
-    )
-    .then((ret) => {
-        console.log(ret[0]);
-        console.log(ret[1]);
-    });
+// readFiles()
+//     .then((ret) =>
+//         organizeOrders(ret[0], ret[1])
+//     )
+//     .then((ret) => {
+//         console.log(ret[0]);
+//         console.log(ret[1]);
+//     });
 
 
 //read fees.json and orders.json
@@ -176,7 +176,33 @@ function organizeOrders(orders, fees) {
 
 }
 
+function mergeDistributions(distributions) {
+    return new Promise(function (resolve, reject) {
+        var ret = {};
+        var other = 0;
+        for (var i in distributions) {
+            for (var property in distributions[i]) {
+                if (distributions[i].hasOwnProperty(property)) {
+
+                    if (property == 'Order Id') continue; //no need to record orderid in total
+                    if (property == 'Other') {
+                        //other need to be append at the end
+                        other = parseFloat(other) + parseFloat(distributions[i][property]);
+                    } else {
+                        ret[property] = (parseFloat(ret[property] ? ret[property] : 0) + parseFloat(distributions[i][property])).toFixed(2);
+                    }
+                }
+            }
+        }
+        ret['Other'] = other.toFixed(2);
+        resolve(ret);
+
+
+    });
+}
+
 module.exports ={
     readFiles: readFiles,
-    organizeOrders: organizeOrders
+    organizeOrders: organizeOrders,
+    mergeDistributions: mergeDistributions
 };

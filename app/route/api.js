@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const orderService = require('../orderService');
+
 
 var orderRouter = function (orders, fees, orders_with_fees, orders_with_distributions) {
 
@@ -22,6 +24,7 @@ var orderRouter = function (orders, fees, orders_with_fees, orders_with_distribu
         idArr = id.split(',');
         var foundDatas = [];
         for (var i in idArr) {
+            idArr[i] = idArr[i].trim(); //trim for head and tail zero
             var foundData = orders_with_fees.filter((obj) => {
                 return obj['Order Id'] === idArr[i];
             })[0]; // gets first match (probably only match)
@@ -38,13 +41,19 @@ var orderRouter = function (orders, fees, orders_with_fees, orders_with_distribu
         idArr = id.split(',');
         var foundDatas = [];
         for (var i in idArr) {
+            idArr[i] = idArr[i].trim(); //trim for head and tail zero
             var foundData = orders_with_distributions.filter((obj) => {
                 return obj['Order Id'] === idArr[i];
             })[0]; // gets first match (probably only match)
             foundDatas.push(foundData);
         }
 
-        res.send(foundDatas);
+        //add total distributions
+        orderService.mergeDistributions(foundDatas).then((ret) => {
+            foundDatas.push(ret);
+            res.send(foundDatas);
+        });
+
 
     });
 
