@@ -31,7 +31,7 @@ var orderRouter = function (orders, fees, orders_with_fees, orders_with_distribu
     });
 
 
-    //get distibutions by ids
+    //get distributions by ids
     router.get('/distributions/:id', (req, res) => {
         var id = req.params.id;
         var idArr = [];
