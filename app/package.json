@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/nathanni/kofile_code_chanllenge#readme",
   "dependencies": {
+    "express": "^4.14.0",
     "jsonfile": "^2.4.0",
     "underscore": "^1.8.3"
   }
