@@ -4,14 +4,14 @@ const feesFile = '../doc/fees.json';
 const ordersFile = '../doc/orders.json';
 
 //ENABLE for testing
-// readFiles()
-//     .then((ret) =>
-//         organizeOrders(ret[0], ret[1])
-//     )
-//     .then((ret) => {
-//         console.log(ret[0]);
-//         console.log(ret[1]);
-//     });
+readFiles()
+    .then((ret) =>
+        organizeOrders(ret[0], ret[1])
+    )
+    .then((ret) => {
+        console.log(ret[0]);
+        console.log(ret[1]);
+    });
 
 
 //read fees.json and orders.json
@@ -49,13 +49,17 @@ function readFile(filename, options) {
 }
 
 
+
+//function to re organize orders and return two arrays
 function organizeOrders(orders, fees) {
     return new Promise(function (resolve, reject) {
 
         var orders_with_fees = []; //entire orders info with fees
-        var orders_with_distributions = []; // entire orders info with distributions
-        var total_funds = {};
-        var total_other = 0;
+        var orders_with_distributions = []; //entire orders info with distributions
+
+        var total_funds = {}; //total funds to be display in the end the distributions
+        var total_other = 0; //total other funds to be display in total_funds
+
         //iterate orders
         for (var i in orders) {
 
@@ -89,14 +93,19 @@ function organizeOrders(orders, fees) {
 
                 //calculate for fees
                 //search fees in fees.json by type
-                var fee = _.where(fees, {"order_item_type": type})[0]['fees'];
+                try {
+                    var fee = _.where(fees, {"order_item_type": type})[0]['fees'];
+                } catch (err) {
+                    console.log("can't get the right type of fee");
+                }
+
                 try {
                     //flat file price
                     var first_page_price = fee[0]['amount'];
                     //additional pages price, if this is not accessible will throw exception
                     var additional_pages_price = fee[1]['amount'];
                 } catch (err) {
-                    //exception  means this type of item only has first_page_price, reset additional pages price to 0
+                    //exception means this type of item only has first_page_price, reset additional pages price to 0
                     additional_pages_price = 0;
                 }
                 //calculate item price
@@ -110,8 +119,11 @@ function organizeOrders(orders, fees) {
 
                 //calculate for distributions
                 //search distributions in fees.json by type
-                var distributions = _.where(fees, {"order_item_type": type})[0]['distributions'];
-
+                try {
+                    var distributions = _.where(fees, {"order_item_type": type})[0]['distributions'];
+                } catch(err) {
+                    console.log("can't get the right type of distributions");
+                }
                 //extra money associated with the order that isn't allocated to a fund should be assigned to a generic "Other" fund.
                 //initial to first_page_price, so we can calculate the remaining price
                 var remaining_fund = first_page_price;
@@ -123,6 +135,7 @@ function organizeOrders(orders, fees) {
                     var fund_price = distributions[k]['amount'] * pages;
 
 
+                    //
                     order_with_distributions[fund_name] =
                                             (parseFloat(order_with_distributions[fund_name] ? order_with_distributions[fund_name] : 0)
                                             + parseFloat(fund_price)).toFixed(2);
@@ -145,10 +158,10 @@ function organizeOrders(orders, fees) {
 
             //save to entire orders_with distributions
             order_with_distributions['Other'] = other_funds;
-            total_other = parseFloat(total_other) + parseFloat(other_funds);
+            total_other = parseFloat(total_other) + parseFloat(other_funds); // other funds also need to be updated
             orders_with_distributions.push(order_with_distributions);
 
-            //last order, save total funds
+            //if it is last order, save total funds
             if (i == orders.length - 1) {
                 total_funds['Other'] = total_other.toFixed(2);
                 orders_with_distributions.push({'Total Distributions': total_funds});
@@ -157,6 +170,7 @@ function organizeOrders(orders, fees) {
 
         }
 
+        //pass info back
         resolve([orders_with_fees, orders_with_distributions]);
     });
 

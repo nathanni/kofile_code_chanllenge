@@ -6,6 +6,8 @@
     2.  $ npm install
     3.  $ node server.js
     
+    Enable line 7 ~ 14 in orderService.js and run orderService.js to do a simply test
+    
     
     
 2. API Usage
@@ -32,4 +34,10 @@
         example: (http://localhost:3000/api/distributions/20150111000001,20150123000001)
         
         
-       
+    
+ 3. Optimization:
+    1.  Cache the data when the server start, so there is no need to re-scan the files repeatedly.
+ 
+ 
+ 4. Future optimization:
+    1. 

@@ -1,7 +1,10 @@
 const orderService = require('./orderService');
 
 
-function initialzeData() {
+// function to initialize
+// 1. read files
+// 2. organize the orders
+function initializeData() {
 
     return new Promise(function (resolve, reject) {
         orderService.readFiles()
@@ -15,4 +18,4 @@ function initialzeData() {
 }
 
 
-module.exports = initialzeData;
+module.exports = initializeData;
